@@ -1,0 +1,14 @@
+# Editor directories and files
+.idea
+
+# build output
+dist
+
+# npm
+node_modules
+
+# local files
+.env
+dump.rdb
+app.log
+todos
