@@ -1,6 +1,8 @@
 import axios, { AxiosInstance } from 'axios'
+import logger from '../utils/logger'
+import GeolocationServiceInterface from '../interfaces/GeolocationServiceInterface'
 
-export default class GeolocationService {
+export default class GeolocationService implements GeolocationServiceInterface {
     private cache = new Map<string, IpDetails>()
 
     private readonly client: AxiosInstance
