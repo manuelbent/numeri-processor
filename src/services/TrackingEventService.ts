@@ -2,7 +2,15 @@ import logger from '../utils/logger'
 import GeolocationServiceInterface from '../interfaces/GeolocationServiceInterface'
 import AnalyticsEventServiceInterface from '../interfaces/AnalyticsEventServiceInterface'
 
+/**
+ * @class TrackingEventService
+ */
 export default class TrackingEventService {
+    /**
+     * @constructor
+     * @param {GeolocationServiceInterface} geolocationService
+     * @param {AnalyticsEventServiceInterface} analyticsEventService
+     */
     constructor(
         private geolocationService: GeolocationServiceInterface,
         private analyticsEventService: AnalyticsEventServiceInterface
