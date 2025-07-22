@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
-import logger from '../utils/logger'
+import { logger } from 'numeri-core'
 import GeolocationServiceInterface from '../interfaces/GeolocationServiceInterface'
 
 export default class GeolocationService implements GeolocationServiceInterface {

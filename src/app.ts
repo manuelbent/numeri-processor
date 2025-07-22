@@ -1,8 +1,8 @@
 import 'dotenv/config'
+import { logger } from 'numeri-core'
 
 import './config/redis'
 import ioc from './config/ioc'
-import logger from './utils/logger'
 import { client as RedisClient } from './config/redis'
 
 ;(async () => {
