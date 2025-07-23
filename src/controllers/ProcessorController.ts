@@ -61,7 +61,7 @@ export default class ProcessorController {
                 timestamp: trackingEvent.payload.timestamp,
                 meta: trackingEvent.payload.properties,
             })
-            logger.debug(`Analytic event with id ${analyticsEvent.id} created for tracking event with id ${trackingEvent.id}`)
+            logger.debug(`Analytics event with id ${analyticsEvent.id} created for tracking event with id ${trackingEvent.id}`)
 
             await this.trackingEventService.update(trackingEvent.id, {
                 status: 'processed',

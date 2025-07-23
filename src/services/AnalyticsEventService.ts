@@ -1,4 +1,4 @@
-import { AnalyticsEvent, RepositoryInterface } from 'numeri-core'
+import { AnalyticsEvent, AnalyticsEventRepositoryInterface } from 'numeri-core'
 import AnalyticsEventServiceInterface from '../interfaces/AnalyticsEventServiceInterface'
 
 /**
@@ -7,9 +7,9 @@ import AnalyticsEventServiceInterface from '../interfaces/AnalyticsEventServiceI
 export default class AnalyticsEventService implements AnalyticsEventServiceInterface {
     /**
      * @constructor
-     * @param {RepositoryInterface<AnalyticsEvent>} repository
+     * @param {AnalyticsEventRepositoryInterface} repository
      */
-    constructor(private repository: RepositoryInterface<AnalyticsEvent>) {}
+    constructor(private repository: AnalyticsEventRepositoryInterface) {}
 
     /**
      * @param {object} data
