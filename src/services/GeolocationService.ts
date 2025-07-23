@@ -2,17 +2,50 @@ import axios, { AxiosInstance } from 'axios'
 import { logger } from 'numeri-core'
 import GeolocationServiceInterface from '../interfaces/GeolocationServiceInterface'
 
+/**
+ * @class GeolocationService
+ */
 export default class GeolocationService implements GeolocationServiceInterface {
+    /**
+     * @property {Map<string, IpDetails>} cache
+     * @private
+     */
     private cache = new Map<string, IpDetails>()
 
+    /**
+     * @property {AxiosInstance} client
+     * @private
+     */
     private readonly client: AxiosInstance
 
+    /**
+     * @property {string[]} excludedIps
+     * @private
+     */
+    private readonly excludedIps: string[] = [
+        '::1',
+        '127.0.0.1',
+        'localhost',
+    ]
+
+    /**
+     * @constructor
+     */
     constructor() {
         this.client = axios.create({ baseURL: 'https://ipapi.co' })
     }
 
+    /**
+     * Evaluate the geolocation of an IP address.
+     * @param {string|undefined} ip
+     * @return {Promise<IpDetails|undefined>}
+     */
     async evaluate(ip: string|undefined): Promise<IpDetails|undefined> {
         if (!ip) {
+            return undefined
+        }
+
+        if (this.excludedIps.includes(ip)) {
             return undefined
         }
 
