@@ -3,11 +3,11 @@ import { logger } from 'numeri-core'
 
 import './config/redis'
 import ioc from './config/ioc'
-import { client as RedisClient } from './config/redis'
+import { client as redisClient } from './config/redis'
 
 ;(async () => {
     try {
-        await RedisClient.subscribe('tracking-events', ioc.trackingEventService.process)
+        await redisClient.subscribe('tracking-events', (message) => ioc.processorController.process(message))
     } catch (err) {
         logger.error(err, 'Something went wrong while subscribing to Redis channel')
     }
