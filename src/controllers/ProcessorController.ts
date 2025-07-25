@@ -59,7 +59,7 @@ export default class ProcessorController {
                 countryCode: geolocation?.countryCode,
                 site: trackingEvent.payload.$site,
                 timestamp: trackingEvent.payload.timestamp,
-                meta: trackingEvent.payload.properties,
+                properties: trackingEvent.payload.properties,
             })
             logger.debug(`Analytics event with id ${analyticsEvent.id} created for tracking event with id ${trackingEvent.id}`)
 
