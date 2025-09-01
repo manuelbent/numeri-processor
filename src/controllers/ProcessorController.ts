@@ -52,7 +52,10 @@ export default class ProcessorController {
 
             const geolocation = await this.geolocationService.evaluate(trackingEvent.payload.$ip)
 
-            const analyticsEvent = await this.analyticsEventService.create({
+            const visitorId = this.analyticsEventService.evaluateVisitorId(trackingEvent.payload)
+
+            await this.analyticsEventService.create({
+                visitorId,
                 trackingEventId: trackingEvent.id,
                 eventType: trackingEvent.payload.event,
                 geolocation,
@@ -61,9 +64,9 @@ export default class ProcessorController {
                 timestamp: trackingEvent.payload.timestamp,
                 properties: trackingEvent.payload.properties,
             })
-            logger.debug(`Analytics event with id ${analyticsEvent.id} created for tracking event with id ${trackingEvent.id}`)
 
             await this.trackingEventService.update(trackingEvent.id, {
+                payload: { ...trackingEvent.payload, $ip: '-' }, // mask IP address after processing
                 status: 'processed',
                 processedAt: new Date(),
             })
