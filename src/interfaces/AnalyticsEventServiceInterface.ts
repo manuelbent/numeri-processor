@@ -1,9 +1,9 @@
-import { AnalyticsEvent } from 'numeri-core'
+import { AnalyticsEvent, Payload } from 'numeri-core'
 
 /**
  * @interface AnalyticsEventServiceInterface
  */
 export default interface AnalyticsEventServiceInterface {
     create(data: object): Promise<AnalyticsEvent>
-    evaluateVisitorId(payload: Record<string, any>): string
+    evaluateVisitorId(payload: Payload): string
 }

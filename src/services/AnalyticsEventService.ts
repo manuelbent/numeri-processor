@@ -1,5 +1,4 @@
-import crypto from 'crypto'
-import { AnalyticsEvent, AnalyticsEventRepositoryInterface } from 'numeri-core'
+import { AnalyticsEvent, AnalyticsEventRepositoryInterface, Payload } from 'numeri-core'
 import AnalyticsEventServiceInterface from '../interfaces/AnalyticsEventServiceInterface'
 
 /**
@@ -22,21 +21,14 @@ export default class AnalyticsEventService implements AnalyticsEventServiceInter
 
     /**
      * @description Evaluates the visitor ID from the payload.
-     * If the payload contains a visitorId, it returns that.
-     * If not, it checks for an IP address ($ip) and generates a SHA-256 hash of it.
-     * If neither is present, it returns 'anonymous'.
      * @param {object} payload
      * @return {string}
      */
-    public evaluateVisitorId(payload: Record<string, any>): string {
-        if (payload.visitorId) {
-            return payload.visitorId
+    public evaluateVisitorId(payload: Payload): string {
+        if (payload.properties.visitorId) {
+            return payload.properties.visitorId
         }
 
-        if (payload.$ip) {
-            return crypto.createHash('sha256').update(payload.$ip).digest('hex')
-        }
-
-        return 'anonymous'
+        return payload.$visitorId
     }
 }
