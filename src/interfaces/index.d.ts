@@ -33,6 +33,5 @@ interface IpDetails {
     countryName: string
     countryCode: string
     region: string
-    city: string
     [key: string]: any
 }

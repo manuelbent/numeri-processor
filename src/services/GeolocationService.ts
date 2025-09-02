@@ -57,7 +57,6 @@ export default class GeolocationService implements GeolocationServiceInterface {
                     countryName: data.country_name,
                     countryCode: data.country_code,
                     region: data.region,
-                    city: data.city,
                 }
                 this.cache.set(ip, geolocation)
             } catch (err) {
