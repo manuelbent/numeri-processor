@@ -1,7 +1,6 @@
 import { logger } from 'numeri-core'
-import TrackingEventServiceInterface from '../interfaces/TrackingEventServiceInterface'
+import EventServiceInterface from '../interfaces/EventServiceInterface'
 import GeolocationServiceInterface from '../interfaces/GeolocationServiceInterface'
-import AnalyticsEventServiceInterface from '../interfaces/AnalyticsEventServiceInterface'
 
 /**
  * @class ProcessorController
@@ -9,26 +8,24 @@ import AnalyticsEventServiceInterface from '../interfaces/AnalyticsEventServiceI
 export default class ProcessorController {
     /**
      * @constructor
-     * @param {TrackingEventServiceInterface} trackingEventService
+     * @param {EventServiceInterface} eventService
      * @param {GeolocationServiceInterface} geolocationService
-     * @param {AnalyticsEventServiceInterface} analyticsEventService
      */
     constructor(
-        private trackingEventService: TrackingEventServiceInterface,
+        private eventService: EventServiceInterface,
         private geolocationService: GeolocationServiceInterface,
-        private analyticsEventService: AnalyticsEventServiceInterface
     ) {}
 
     /**
-     * Processes a tracking event message.
+     * Processes a raw event message.
      * This method is called when a message is received from the Redis channel.
-     * It parses the message, retrieves the tracking event by ID,
+     * It parses the message, retrieves the raw event by ID,
      * updates its status to 'processing',
      * evaluates the geolocation based on the IP address,
-     * creates an analytics event,
-     * and finally updates the tracking event status to 'processed'.
+     * creates a processed event,
+     * and finally updates the raw event status to 'processed'.
      * If any error occurs during the process,
-     * it updates the tracking event status to 'failed' with the error message.
+     * it updates the raw event status to 'failed' with the error message.
      * @param {string} message
      * @return {Promise<void>}
      */
@@ -37,42 +34,42 @@ export default class ProcessorController {
         try {
             ({ id } = JSON.parse(message))
         } catch (err) {
-            logger.error(err, `Something went wrong while parsing tracking event message: ${message}`)
+            logger.error(err, `Something went wrong while parsing raw event message: ${message}`)
             return
         }
 
         try {
-            const trackingEvent = await this.trackingEventService.getById(id)
-            if (!trackingEvent) {
-                logger.warn(`No tracking event found with id: ${id}`)
+            const rawEvent = await this.eventService.getRawById(id)
+            if (!rawEvent) {
+                logger.warn(`No raw event found with id: ${id}`)
                 return
             }
 
-            await this.trackingEventService.update(id, { status: 'processing' })
+            await this.eventService.updateRawById(id, { status: 'processing' })
 
-            const geolocation = await this.geolocationService.evaluate(trackingEvent.payload.$ip)
+            const geolocation = await this.geolocationService.evaluate(rawEvent.payload.$ip)
 
-            const visitorId = this.analyticsEventService.evaluateVisitorId(trackingEvent.payload)
+            const visitorId = this.eventService.evaluateVisitorId(rawEvent.payload)
 
-            await this.analyticsEventService.create({
+            await this.eventService.createProcessed({
                 visitorId,
-                trackingEventId: trackingEvent.id,
-                eventType: trackingEvent.payload.event,
+                rawEventId: rawEvent.id,
+                eventType: rawEvent.payload.event,
                 geolocation,
                 countryCode: geolocation?.countryCode,
-                site: trackingEvent.payload.$site,
-                timestamp: trackingEvent.payload.timestamp,
-                properties: trackingEvent.payload.properties,
+                site: rawEvent.payload.$site,
+                timestamp: rawEvent.payload.timestamp,
+                properties: rawEvent.payload.properties,
             })
 
-            await this.trackingEventService.update(trackingEvent.id, {
-                payload: { ...trackingEvent.payload, $ip: '-' }, // mask IP address after processing
+            await this.eventService.updateRawById(rawEvent.id, {
+                payload: { ...rawEvent.payload, $ip: '-' }, // mask IP address after processing
                 status: 'processed',
                 processedAt: new Date(),
             })
         } catch (err) {
-            logger.error(err, `Something went wrong while processing tracking event message: ${message}`)
-            await this.trackingEventService.update(id, {
+            logger.error(err, `Something went wrong while processing raw event message: ${message}`)
+            await this.eventService.updateRawById(id, {
                 status: 'failed',
                 errorMessage: (err as Error).message
             })

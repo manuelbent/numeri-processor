@@ -7,7 +7,7 @@ import { client as redisClient } from './config/redis'
 
 ;(async () => {
     try {
-        await redisClient.subscribe('tracking-events', (message) => ioc.processorController.process(message))
+        await redisClient.subscribe('raw-events', (message) => ioc.processorController.process(message))
     } catch (err) {
         logger.error(err, 'Something went wrong while subscribing to Redis channel')
     }

@@ -1,14 +1,14 @@
 // common resources
 import {
-    AnalyticsEventRepository,
-    TrackingEventRepository
+    RawEventRepository,
+    ProcessedEventRepository
 } from 'numeri-core'
 // controllers
 import ProcessorController from '../controllers/ProcessorController'
 // services
 import GeolocationService from '../services/GeolocationService'
-import AnalyticsEventService from '../services/AnalyticsEventService'
-import TrackingEventService from '../services/TrackingEventService'
+import EventService from '../services/EventService'
+
 
 /**
  * Dependency Injection Container.
@@ -16,9 +16,8 @@ import TrackingEventService from '../services/TrackingEventService'
  */
 class Container {
     public geolocationService: GeolocationService = new GeolocationService()
-    public analyticsEventService: AnalyticsEventService = new AnalyticsEventService(new AnalyticsEventRepository())
-    public trackingEventService: TrackingEventService = new TrackingEventService(new TrackingEventRepository())
-    public processorController: ProcessorController = new ProcessorController(this.trackingEventService, this.geolocationService, this.analyticsEventService)
+    public eventService: EventService = new EventService(new RawEventRepository(), new ProcessedEventRepository())
+    public processorController: ProcessorController = new ProcessorController(this.eventService, this.geolocationService)
 }
 
 export default new Container()
