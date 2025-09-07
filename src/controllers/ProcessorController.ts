@@ -54,7 +54,7 @@ export default class ProcessorController {
             await this.eventService.createProcessed({
                 visitorId,
                 rawEventId: rawEvent.id,
-                eventType: rawEvent.payload.event,
+                type: rawEvent.payload.event,
                 geolocation,
                 countryCode: geolocation?.countryCode,
                 site: rawEvent.payload.$site,
