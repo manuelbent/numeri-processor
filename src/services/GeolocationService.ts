@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
-import { logger } from 'numeri-core'
+import { logger } from '@manuelbent/numeri-core'
 import GeolocationServiceInterface from '../interfaces/GeolocationServiceInterface'
 
 /**

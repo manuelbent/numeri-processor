@@ -1,4 +1,4 @@
-import { logger } from 'numeri-core'
+import { logger } from '@manuelbent/numeri-core'
 import EventServiceInterface from '../interfaces/EventServiceInterface'
 import GeolocationServiceInterface from '../interfaces/GeolocationServiceInterface'
 

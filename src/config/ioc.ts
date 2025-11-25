@@ -2,7 +2,7 @@
 import {
     RawEventRepository,
     ProcessedEventRepository
-} from 'numeri-core'
+} from '@manuelbent/numeri-core'
 // controllers
 import ProcessorController from '../controllers/ProcessorController'
 // services

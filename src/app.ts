@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { logger } from 'numeri-core'
+import { logger } from '@manuelbent/numeri-core'
 
 import './config/redis'
 import ioc from './config/ioc'

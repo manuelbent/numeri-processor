@@ -4,7 +4,7 @@ import {
     ProcessedEventRepositoryInterface,
     RawEvent,
     RawEventRepositoryInterface,
-} from 'numeri-core'
+} from '@manuelbent/numeri-core'
 import EventServiceInterface from '../interfaces/EventServiceInterface'
 
 /**
